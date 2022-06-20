@@ -21,17 +21,21 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    @Transactional
+//    @Transactional
     public List<User> findAll(){
         return userDAO.findAll();
     }
 
-    @Transactional
+//    @Transactional
     public User findById(Long id) {
         return userDAO.findById(id);
     }
 
-    @Transactional
+    public User findByUsername(String username) {
+        return userDAO.findByUsername(username);
+    }
+
+//    @Transactional
     public void create(User user) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         user.setCreated(currentDateTime);
@@ -44,21 +48,20 @@ public class UserService {
         userDAO.saveOrUpdate(user);
     }
 
-    @Transactional
-    public User update(User user) {
+//    @Transactional
+    public void update(User user) {
         User fromDb = userDAO.findById(user.getId());
-        if(fromDb.equals(SecurityUtil.getCurrentUser())) {
-            user.setRole(fromDb.getRole());
-            user.setActive(fromDb.isActive());
-        }
-
         LocalDateTime currentDateTime = LocalDateTime.now();
+        user.setCreated(fromDb.getCreated());
         user.setUpdated(currentDateTime);
 
-        return userDAO.saveOrUpdate(user);
+        user.setRole(fromDb.getRole());
+        user.setActive(fromDb.isActive());
+
+        userDAO.saveOrUpdate(user);
     }
 
-    @Transactional
+//    @Transactional
     public void changeRole(User user) {
         User fromDb = userDAO.findById(user.getId());
 
@@ -72,7 +75,7 @@ public class UserService {
         userDAO.saveOrUpdate(fromDb);
     }
 
-    @Transactional
+//    @Transactional
     public void blockUser(User user) {
         User fromDb = userDAO.findById(user.getId());
 
@@ -86,7 +89,7 @@ public class UserService {
         userDAO.saveOrUpdate(fromDb);
     }
 
-    @Transactional
+//    @Transactional
     public void delete(Long id) {
         userDAO.delete(id);
     }

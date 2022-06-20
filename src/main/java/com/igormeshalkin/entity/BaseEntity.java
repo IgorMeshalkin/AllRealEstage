@@ -1,7 +1,8 @@
 package com.igormeshalkin.entity;
 
-import java.time.LocalDateTime;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 public class BaseEntity {

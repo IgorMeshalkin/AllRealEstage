@@ -48,7 +48,7 @@ public class AdminController {
     public String updateUser(@RequestParam("userId") long id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
-        return "update-user";
+        return "update-user-for-admin";
     }
 
     @RequestMapping("/delete")

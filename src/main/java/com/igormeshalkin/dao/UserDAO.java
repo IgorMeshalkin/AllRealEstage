@@ -18,11 +18,13 @@ public class UserDAO {
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     public List<User> findAll() {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("from User", User.class).getResultList();
     }
 
+    @Transactional
     public User findById(Long id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(User.class, id);
@@ -37,15 +39,13 @@ public class UserDAO {
         return result;
     }
 
-    public User saveOrUpdate(User user) {
+    @Transactional
+    public void saveOrUpdate(User user) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(user);
-        Query query = session.createQuery("from User where username = :username");
-        query.setParameter("username", user.getUsername());
-        User result = (User) query.getSingleResult();
-        return result;
     }
 
+    @Transactional
     public void delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Query<User> query = session.createQuery("delete from User where id = :userId");

@@ -33,7 +33,7 @@
 </form>
 <hr>
 
-<h2 align="center">Main (Хуеин)</h2>
+<h2 align="center">Main</h2>
 
 <p align="center">
     <button style="height:30px;width:50px" onclick="window.location.href='/api/admin/users'"><b>All Users</b></button>

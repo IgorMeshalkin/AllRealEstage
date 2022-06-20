@@ -35,15 +35,26 @@
 
                 <form:hidden path="id"/>
 
-                Username: <form:input path="username"/>
-                <br>
-                Password: <form:input path="password"/>
-                <br>
-                Repeat password: <form:input path="confirmPassword"/>
-                <br>
-                First name: <form:input path="firstName"/>
-                <br>
-                Last name: <form:input path="lastName"/>
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    Username: <form:input path="username"/>
+                    <form:errors cssStyle="color: red" path="username"></form:errors>
+                </div>
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    Password: <form:input path="password"/>
+                    <form:errors cssStyle="color: red" path="password"></form:errors>
+                </div>
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    Repeat password: <form:input path="confirmPassword"/>
+                    <form:errors cssStyle="color: red" path="confirmPassword"></form:errors>
+                </div>
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    First name: <form:input path="firstName"/>
+                    <form:errors cssStyle="color: red" path="firstName"></form:errors>
+                </div>
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    Last name: <form:input path="lastName"/>
+                    <form:errors cssStyle="color: red" path="lastName"></form:errors>
+                </div>
                 <br>
                 <input type="submit" value="OK">
             </form:form>
