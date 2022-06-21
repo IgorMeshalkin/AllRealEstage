@@ -26,6 +26,7 @@
     </style>
 </head>
 <body>
+
 <div align="right">
     <%= request.getAttribute("currentUserName") %>
     <button onclick="window.location.href='/api/users/profile'">Profile</button>
@@ -35,10 +36,34 @@
 </div>
 <hr>
 
-<h2 align="center">Main</h2>
+<h2 align="center">Your profile</h2>
+<table align="center">
+    <tr>
+        <td style="background: #ccc"><b>Username</b></td>
+        <td>${currentUser.username}</td>
+    </tr>
+    <tr>
+        <td style="background: #ccc"><b>Firstname</b></td>
+        <td>${currentUser.firstName}</td>
+    </tr>
+    <tr>
+        <td style="background: #ccc"><b>Lastname</b></td>
+        <td>${currentUser.lastName}</td>
+    </tr>
+    <tr>
+        <td style="background: #ccc"><b>Phone number</b></td>
+        <td>${currentUser.phoneNumber}</td>
+    </tr>
+    <tr>
+        <td style="background: #ccc"><b>Created</b></td>
+        <td>${currentUser.createdFormat}</td>
+    </tr>
+</table>
+
+<p align="center"><a href="<c:url value="/api/users/update_user"/>"><b>Update</b></a></p>
 
 <p align="center">
-    <button style="height:60px;width:100px" onclick="window.location.href='/api/admin/users'"><b>All Users</b></button>
+    <button style="height:30px;width:50px" onclick="window.location.href='/'"><b>Main</b></button>
 </p>
 </body>
 </html>

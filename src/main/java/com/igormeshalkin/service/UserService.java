@@ -3,12 +3,10 @@ package com.igormeshalkin.service;
 import com.igormeshalkin.dao.UserDAO;
 import com.igormeshalkin.entity.Role;
 import com.igormeshalkin.entity.User;
-import com.igormeshalkin.util.SecurityUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,12 +19,10 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-//    @Transactional
     public List<User> findAll(){
         return userDAO.findAll();
     }
 
-//    @Transactional
     public User findById(Long id) {
         return userDAO.findById(id);
     }
@@ -35,11 +31,12 @@ public class UserService {
         return userDAO.findByUsername(username);
     }
 
-//    @Transactional
     public void create(User user) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         user.setCreated(currentDateTime);
         user.setUpdated(currentDateTime);
+
+        user.setPhoneNumber(phoneNumberFormat(user.getPhoneNumber()));
         user.setRole(Role.USER);
         user.setActive(true);
 
@@ -48,20 +45,26 @@ public class UserService {
         userDAO.saveOrUpdate(user);
     }
 
-//    @Transactional
     public void update(User user) {
         User fromDb = userDAO.findById(user.getId());
         LocalDateTime currentDateTime = LocalDateTime.now();
         user.setCreated(fromDb.getCreated());
         user.setUpdated(currentDateTime);
 
+        if(!user.getPhoneNumber().equals(fromDb.getPhoneNumber())) {
+            user.setPhoneNumber(phoneNumberFormat(user.getPhoneNumber()));
+        }
+
         user.setRole(fromDb.getRole());
         user.setActive(fromDb.isActive());
+
+        if(user.getConfirmPassword() != null) {
+            user.setPassword(passwordEncoderFromUserService().encode(user.getPassword()));
+        }
 
         userDAO.saveOrUpdate(user);
     }
 
-//    @Transactional
     public void changeRole(User user) {
         User fromDb = userDAO.findById(user.getId());
 
@@ -75,7 +78,6 @@ public class UserService {
         userDAO.saveOrUpdate(fromDb);
     }
 
-//    @Transactional
     public void blockUser(User user) {
         User fromDb = userDAO.findById(user.getId());
 
@@ -89,13 +91,24 @@ public class UserService {
         userDAO.saveOrUpdate(fromDb);
     }
 
-//    @Transactional
     public void delete(Long id) {
-        userDAO.delete(id);
+            userDAO.delete(id);
     }
 
     @Bean
     protected PasswordEncoder passwordEncoderFromUserService() {
         return new BCryptPasswordEncoder();
+    }
+
+    protected String phoneNumberFormat(String phoneNumber) {
+        String numberOnly= phoneNumber.replaceAll("[^0-9]", "");
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("+7 (" + numberOnly.substring(1, 4)
+                + ") " + numberOnly.substring(4, 7)
+                + "-" + numberOnly.substring(7, 9)
+                + "-" + numberOnly.substring(9));
+
+        return builder.toString();
     }
 }

@@ -11,7 +11,7 @@ public class AnnouncementController {
 
     @RequestMapping
     public String main(Model model) {
-        model.addAttribute("currentUser", SecurityUtil.getCurrentUserFirstNameAndLastName());
+        model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         return "main";
     }
 }

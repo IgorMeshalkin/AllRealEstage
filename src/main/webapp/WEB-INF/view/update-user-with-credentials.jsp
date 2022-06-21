@@ -27,14 +27,22 @@
 </head>
 <html>
 <body>
-<h2 align="center">Registration</h2>
+<div align="right">
+    <%= request.getAttribute("currentUserName") %>
+    <button onclick="window.location.href='/api/users/profile'">Profile</button>
+    <form action="/logout" method="post" style="float: right">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<hr>
+
+<h2 align="center">Update your profile</h2>
 <table align="center">
     <tr>
         <th>
-            <form:form method="get" action="/api/users/save_registered_user" modelAttribute="user">
+            <form:form method="get" action="/api/users/save_updated_user" modelAttribute="user">
 
                 <form:hidden path="id"/>
-
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     Username: <form:input path="username"/>
                     <form:errors cssStyle="color: red" path="username"></form:errors>
@@ -59,7 +67,6 @@
                     Phone number: <form:input path="phoneNumber"/>
                     <form:errors cssStyle="color: red" path="phoneNumber"></form:errors>
                 </div>
-                <br>
                 <input type="submit" value="OK">
             </form:form>
         </th>

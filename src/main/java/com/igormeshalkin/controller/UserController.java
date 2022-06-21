@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/api/users")
@@ -32,12 +33,19 @@ public class UserController {
         return "registration";
     }
 
-//    @RequestMapping("/updateUser")
-//    public String updateUser(@RequestParam("userId") long id, Model model) {
-//        User user = userService.findById(id);
-//        model.addAttribute("user", user);
-//        return "user-info";
-//    }
+    @RequestMapping("/update_user")
+    public String updateUser(Model model) {
+        model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
+        model.addAttribute("user", SecurityUtil.getCurrentUser());
+        return "update-user";
+    }
+
+    @RequestMapping("/update_user_with_credentials")
+    public String updateUserWithCredentials(Model model) {
+        model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
+        model.addAttribute("user", SecurityUtil.getCurrentUser());
+        return "update-user-with-credentials";
+    }
 
     @RequestMapping(value = "/save_registered_user")
     public String saveRegisteredUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
@@ -45,32 +53,35 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-
         userService.create(user);
         securityService.autoLogin(user.getUsername(), user.getConfirmPassword());
-
         return "redirect:/";
     }
 
     @RequestMapping(value = "/save_updated_user")
     public String saveUpdatedUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
-        userValidator.validateUpdateForAdmin(user, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            if (SecurityUtil.getCurrentUser().equals(user)) {
-                return "redirect:/";
-            } else {
-                return "update-user-for-admin";
+        if(user.getConfirmPassword() != null) {
+            userValidator.validate(user, bindingResult);
+            if (bindingResult.hasErrors()) {
+                return "update-user-with-credentials";
             }
-        }
-
-        userService.update(user);
-
-        if (SecurityUtil.getCurrentUser().equals(user)) {
-            return "redirect:/";
+            userService.update(user);
+            securityService.autoLogin(user.getUsername(), user.getConfirmPassword());
         } else {
-            return "redirect:/api/admin/users";
+            userValidator.validateUpdate(user, bindingResult);
+            if (bindingResult.hasErrors()) {
+                return "update-user";
+            }
+            userService.update(user);
         }
+        return "redirect:/api/users/profile";
+    }
+
+    @RequestMapping("/profile")
+    public String profile(Model model) {
+        model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
+        model.addAttribute("currentUser", SecurityUtil.getCurrentUser());
+        return "profile";
     }
 
 //

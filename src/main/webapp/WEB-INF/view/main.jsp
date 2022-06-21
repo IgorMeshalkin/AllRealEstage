@@ -26,17 +26,19 @@
     </style>
 </head>
 <body>
-
-<form action="/logout" method="post" align="right">
-    <%= request.getAttribute("currentUser") %>
-    <input type="submit" value="Sign Out"/>
-</form>
+<div align="right">
+    <%= request.getAttribute("currentUserName") %>
+    <button onclick="window.location.href='/api/users/profile'">Profile</button>
+    <form action="/logout" method="post" style="float: right">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
 <hr>
 
 <h2 align="center">Main</h2>
 
 <p align="center">
-    <button style="height:30px;width:50px" onclick="window.location.href='/api/admin/users'"><b>All Users</b></button>
+    <button style="height:60px;width:100px" onclick="window.location.href='/api/admin/users'"><b>All Users</b></button>
 </p>
 </body>
 </html>

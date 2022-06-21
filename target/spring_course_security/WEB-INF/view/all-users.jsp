@@ -27,10 +27,13 @@
 </head>
 <body>
 
-<form action="/logout" method="post" align="right">
-    <%= request.getAttribute("currentUser") %>
-    <input type="submit" value="Sign Out"/>
-</form>
+<div align="right">
+    <%= request.getAttribute("currentUserName") %>
+    <button onclick="window.location.href='/api/users/profile'">Profile</button>
+    <form action="/logout" method="post" style="float: right">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
 <hr>
 
 <h2 align="center">All Users</h2>
@@ -39,6 +42,7 @@
     <tr>
         <th>First name</th>
         <th>Last name</th>
+        <th>Phone number</th>
         <th>Role</th>
         <th>Active</th>
         <th>Created</th>
@@ -66,6 +70,7 @@
         <tr style="color:${user.active ? 'black' : 'grey'}">
             <td>${user.firstName}</td>
             <td>${user.lastName}</td>
+            <td>${user.phoneNumber}</td>
             <td>${user.role}
                 <input type="button" value="Change Role"
                        onclick="window.location.href = '${changeRoleButton}'">

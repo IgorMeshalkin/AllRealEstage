@@ -22,6 +22,9 @@ public class User extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
@@ -32,11 +35,13 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    public User(String username, String password, String firstName, String lastName) {
+    public User(String username, String password, String confirmPassword, String firstName, String lastName, String phoneNumber) {
         this.username = username;
         this.password = password;
+        this.confirmPassword = confirmPassword;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUsername() {
@@ -79,6 +84,14 @@ public class User extends BaseEntity {
         this.lastName = lastName;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -108,11 +121,14 @@ public class User extends BaseEntity {
     @Override
     public String toString() {
         return "User{" +
-                "id='" + getId() + '\'' +
-                ", username='" + username + '\'' +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", role=" + role +
+                ", active=" + active +
                 '}';
     }
 }

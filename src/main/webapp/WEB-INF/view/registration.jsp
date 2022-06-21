@@ -40,11 +40,11 @@
                     <form:errors cssStyle="color: red" path="username"></form:errors>
                 </div>
                 <div class="form-group ${status.error ? 'has-error' : ''}">
-                    Password: <form:input path="password"/>
+                    Password: <form:input type="password" path="password"/>
                     <form:errors cssStyle="color: red" path="password"></form:errors>
                 </div>
                 <div class="form-group ${status.error ? 'has-error' : ''}">
-                    Repeat password: <form:input path="confirmPassword"/>
+                    Repeat password: <form:input type="password" path="confirmPassword"/>
                     <form:errors cssStyle="color: red" path="confirmPassword"></form:errors>
                 </div>
                 <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -54,6 +54,10 @@
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     Last name: <form:input path="lastName"/>
                     <form:errors cssStyle="color: red" path="lastName"></form:errors>
+                </div>
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    Phone number: <form:input path="phoneNumber"/>
+                    <form:errors cssStyle="color: red" path="phoneNumber"></form:errors>
                 </div>
                 <br>
                 <input type="submit" value="OK">

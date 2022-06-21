@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%--Accept-Charset: utf-8, iso-8859-1;q=0.5--%>
 <!DOCTYPE html>
@@ -27,26 +28,25 @@
 </head>
 <html>
 <body>
-<h2 align="center">Registration</h2>
+<div align="right">
+    <%= request.getAttribute("currentUserName") %>
+    <button onclick="window.location.href='/api/users/profile'">Profile</button>
+    <form action="/logout" method="post" style="float: right">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<hr>
+
+<h2 align="center">Update your profile</h2>
 <table align="center">
     <tr>
         <th>
-            <form:form method="get" action="/api/users/save_registered_user" modelAttribute="user">
+            <form:form method="get" action="/api/users/save_updated_user" modelAttribute="user">
 
                 <form:hidden path="id"/>
+                <form:hidden path="username"/>
+                <form:hidden path="password"/>
 
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    Username: <form:input path="username"/>
-                    <form:errors cssStyle="color: red" path="username"></form:errors>
-                </div>
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    Password: <form:input type="password" path="password"/>
-                    <form:errors cssStyle="color: red" path="password"></form:errors>
-                </div>
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    Repeat password: <form:input type="password" path="confirmPassword"/>
-                    <form:errors cssStyle="color: red" path="confirmPassword"></form:errors>
-                </div>
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     First name: <form:input path="firstName"/>
                     <form:errors cssStyle="color: red" path="firstName"></form:errors>
@@ -59,11 +59,11 @@
                     Phone number: <form:input path="phoneNumber"/>
                     <form:errors cssStyle="color: red" path="phoneNumber"></form:errors>
                 </div>
-                <br>
                 <input type="submit" value="OK">
             </form:form>
         </th>
     </tr>
 </table>
+<p align="center"><a href="<c:url value="/api/users/update_user_with_credentials"/>"><b>Update with credentials</b></a></p>
 </body>
 </html>

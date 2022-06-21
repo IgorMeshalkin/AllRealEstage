@@ -25,4 +25,9 @@ public class SecurityUtil {
         String result = currentUser.getFirstName() + " " + currentUser.getLastName();
         return result;
     }
+
+    public static boolean isAuthentication() {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        return !name.equals("anonymousUser");
+    }
 }
