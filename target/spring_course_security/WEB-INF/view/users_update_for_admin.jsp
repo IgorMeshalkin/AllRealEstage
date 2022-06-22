@@ -36,25 +36,16 @@
 </div>
 <hr>
 
-<h2 align="center">Update your profile</h2>
+<h2 align="center">Update User</h2>
 <table align="center">
     <tr>
         <th>
-            <form:form method="get" action="/api/users/save_updated_user" modelAttribute="user">
+            <form:form method="post" action="/api/admin/users/save_updated_user" modelAttribute="user">
 
                 <form:hidden path="id"/>
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    Username: <form:input path="username"/>
-                    <form:errors cssStyle="color: red" path="username"></form:errors>
-                </div>
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    Password: <form:input type="password" path="password"/>
-                    <form:errors cssStyle="color: red" path="password"></form:errors>
-                </div>
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    Repeat password: <form:input type="password" path="confirmPassword"/>
-                    <form:errors cssStyle="color: red" path="confirmPassword"></form:errors>
-                </div>
+                <form:hidden path="username"/>
+                <form:hidden path="password"/>
+
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     First name: <form:input path="firstName"/>
                     <form:errors cssStyle="color: red" path="firstName"></form:errors>

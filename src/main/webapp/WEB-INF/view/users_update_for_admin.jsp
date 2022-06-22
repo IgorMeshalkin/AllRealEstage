@@ -1,5 +1,4 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%--Accept-Charset: utf-8, iso-8859-1;q=0.5--%>
 <!DOCTYPE html>
@@ -37,11 +36,11 @@
 </div>
 <hr>
 
-<h2 align="center">Update your profile</h2>
+<h2 align="center">Update User</h2>
 <table align="center">
     <tr>
         <th>
-            <form:form method="get" action="/api/users/save_updated_user" modelAttribute="user">
+            <form:form method="post" action="/api/admin/users/save_updated_user" modelAttribute="user">
 
                 <form:hidden path="id"/>
                 <form:hidden path="username"/>
@@ -64,6 +63,5 @@
         </th>
     </tr>
 </table>
-<p align="center"><a href="<c:url value="/api/users/update_user_with_credentials"/>"><b>Update with credentials</b></a></p>
 </body>
 </html>

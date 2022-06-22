@@ -35,7 +35,43 @@
 </div>
 <hr>
 
-<h2 align="center">Main</h2>
+<h2 align="center">All Apartments</h2>
+
+<table align="center">
+    <tr>
+        <th>Address</th>
+        <th>Number of rooms</th>
+        <th>Area</th>
+        <th>Floor</th>
+        <th>Total floors</th>
+        <th>Balcony availability</th>
+        <th>Price</th>
+        <th>Contacts</th>
+        <th>Created</th>
+    </tr>
+    <c:forEach var="apartment" items="${allApartments}">
+
+        <c:url var="updateButton" value="/api/admin/users/update_user">
+            <c:param name="userId" value="${user.id}"/>
+        </c:url>
+
+        <tr>
+            <td>${apartment.addressFormat}</td>
+            <td>${apartment.numberOfRooms}</td>
+            <td>${apartment.area}</td>
+            <td>${apartment.floor}</td>
+            <td>${apartment.totalFloors}</td>
+            <td>${apartment.balconyAvailability ? 'Yes' : 'No'}</td>
+            <td>${apartment.priceFormat}</td>
+            <td>${apartment.user.phoneNumber}</td>
+            <td>${apartment.createdFormat}</td>
+        </tr>
+    </c:forEach>
+</table>
+
+<p align="center">
+    <button style="height:60px;width:100px" onclick="window.location.href='/create_apartment'"><b>Add new apartment</b></button>
+</p>
 
 <p align="center">
     <button style="height:60px;width:100px" onclick="window.location.href='/api/admin/users'"><b>All Users</b></button>

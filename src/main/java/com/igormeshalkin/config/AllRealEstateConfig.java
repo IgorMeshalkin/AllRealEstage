@@ -41,7 +41,6 @@ public class AllRealEstateConfig {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try {
             dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
-//            jdbc:mysql://localhost:3306/real_estate_db?useSSL=false&amp;serverTimezone=UTC
             dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/real_estate_db");
             dataSource.setUser("root");
             dataSource.setPassword("root");

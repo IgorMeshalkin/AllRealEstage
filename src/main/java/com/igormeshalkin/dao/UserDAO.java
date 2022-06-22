@@ -18,13 +18,11 @@ public class UserDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional
     public List<User> findAll() {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("from User", User.class).getResultList();
     }
 
-    @Transactional
     public User findById(Long id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(User.class, id);
@@ -39,13 +37,11 @@ public class UserDAO {
         return result;
     }
 
-    @Transactional
     public void saveOrUpdate(User user) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(user);
     }
 
-    @Transactional
     public void delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Query<User> query = session.createQuery("delete from User where id = :userId");

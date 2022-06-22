@@ -9,8 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/api/users")
@@ -19,76 +20,73 @@ public class UserController {
     private final SecurityService securityService;
     private final UserValidator userValidator;
 
-
     public UserController(UserService userService, SecurityService securityService, UserValidator userValidator) {
         this.userService = userService;
         this.securityService = securityService;
         this.userValidator = userValidator;
     }
 
-    @RequestMapping("/registration")
-    public String addNewUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "registration";
+    @RequestMapping(value = "/cuca/{id}", method = RequestMethod.GET)
+    public void cuca(@PathVariable long id) {
+        User user = userService.findById(id);
+        System.out.println(user.getApartments().size());
     }
 
-    @RequestMapping("/update_user")
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String profile(Model model) {
+        model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
+        model.addAttribute("currentUser", SecurityUtil.getCurrentUser());
+        return "users_profile";
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public String registration(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "users_registration";
+    }
+
+    @RequestMapping(value = "/update_user", method = RequestMethod.GET)
     public String updateUser(Model model) {
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         model.addAttribute("user", SecurityUtil.getCurrentUser());
-        return "update-user";
+        return "users_update";
     }
 
-    @RequestMapping("/update_user_with_credentials")
+    @RequestMapping(value = "/update_user_with_credentials", method = RequestMethod.GET)
     public String updateUserWithCredentials(Model model) {
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         model.addAttribute("user", SecurityUtil.getCurrentUser());
-        return "update-user-with-credentials";
+        return "users_update_with_credentials";
     }
 
-    @RequestMapping(value = "/save_registered_user")
+    @RequestMapping(value = "/save_registered_user", method = RequestMethod.POST)
     public String saveRegisteredUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "registration";
+            return "users_registration";
         }
         userService.create(user);
         securityService.autoLogin(user.getUsername(), user.getConfirmPassword());
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/save_updated_user")
+    @RequestMapping(value = "/save_updated_user", method = RequestMethod.POST)
     public String saveUpdatedUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         if(user.getConfirmPassword() != null) {
             userValidator.validate(user, bindingResult);
             if (bindingResult.hasErrors()) {
-                return "update-user-with-credentials";
+                return "users_update_with_credentials";
             }
             userService.update(user);
             securityService.autoLogin(user.getUsername(), user.getConfirmPassword());
         } else {
             userValidator.validateUpdate(user, bindingResult);
             if (bindingResult.hasErrors()) {
-                return "update-user";
+                return "users_update";
             }
             userService.update(user);
         }
         return "redirect:/api/users/profile";
     }
-
-    @RequestMapping("/profile")
-    public String profile(Model model) {
-        model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
-        model.addAttribute("currentUser", SecurityUtil.getCurrentUser());
-        return "profile";
-    }
-
-//
-//    @RequestMapping("/delete")
-//    public String delete(@RequestParam("userId") long id) {
-//        userService.delete(id);
-//        return "redirect:/";
-//    }
-
 }

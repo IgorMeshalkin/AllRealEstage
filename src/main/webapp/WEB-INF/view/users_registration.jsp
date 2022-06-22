@@ -31,7 +31,7 @@
 <table align="center">
     <tr>
         <th>
-            <form:form method="get" action="/api/users/save_registered_user" modelAttribute="user">
+            <form:form method="post" action="/api/users/save_registered_user" modelAttribute="user">
 
                 <form:hidden path="id"/>
 

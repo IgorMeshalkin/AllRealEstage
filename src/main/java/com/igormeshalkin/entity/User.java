@@ -2,6 +2,7 @@ package com.igormeshalkin.entity;
 
 import javax.persistence.*;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -31,6 +32,12 @@ public class User extends BaseEntity {
 
     @Column(name = "active")
     private boolean active;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Apartment> apartments;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<House> houses;
 
     public User() {
     }
@@ -106,6 +113,22 @@ public class User extends BaseEntity {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<Apartment> getApartments() {
+        return apartments;
+    }
+
+    public void setApartments(List<Apartment> apartments) {
+        this.apartments = apartments;
+    }
+
+    public List<House> getHouses() {
+        return houses;
+    }
+
+    public void setHouses(List<House> houses) {
+        this.houses = houses;
     }
 
     public String getCreatedFormat() {

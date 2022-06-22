@@ -31,11 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/users/registration").permitAll()
-                .antMatchers("/api/users//save_registered_user").permitAll()
+                .antMatchers("/api/users/save_registered_user").permitAll()
+                .antMatchers("/api/users/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-//                .httpBasic();
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
