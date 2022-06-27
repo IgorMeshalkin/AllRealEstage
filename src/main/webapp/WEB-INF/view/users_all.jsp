@@ -4,6 +4,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
+<title>All users</title>
 <head>
     <style>
         table {
@@ -45,6 +46,7 @@
         <th>Phone number</th>
         <th>Role</th>
         <th>Active</th>
+        <th>Rating</th>
         <th>Created</th>
         <th>Updated</th>
         <th>Update/Delete</th>
@@ -79,6 +81,7 @@
                 <input type="button" value="${user.active ? 'Block' : 'Unlock'}"
                        onclick="window.location.href = '${blockButton}'">
             </td>
+            <td>${user.rating}</td>
             <td>${user.createdFormat}</td>
             <td>${user.updatedFormat}</td>
             <td>

@@ -51,6 +51,10 @@
         <td>${currentUser.lastName}</td>
     </tr>
     <tr>
+        <td style="background: #ccc"><b>Rating</b></td>
+        <td>${currentUser.rating}</td>
+    </tr>
+    <tr>
         <td style="background: #ccc"><b>Phone number</b></td>
         <td>${currentUser.phoneNumber}</td>
     </tr>

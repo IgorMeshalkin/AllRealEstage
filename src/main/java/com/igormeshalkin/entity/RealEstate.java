@@ -1,8 +1,14 @@
 package com.igormeshalkin.entity;
 
+import com.igormeshalkin.util.DateTimeFormatUtil;
+import com.igormeshalkin.util.SecurityUtil;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @MappedSuperclass
 public class RealEstate extends BaseEntity {
@@ -97,5 +103,9 @@ public class RealEstate extends BaseEntity {
         stringBuilder.append(" " + price);
 
         return stringBuilder.reverse().toString();
+    }
+
+    public String getCreatedFormat() {
+        return getCreated().format(DateTimeFormatUtil.onlyDateFormatter());
     }
 }

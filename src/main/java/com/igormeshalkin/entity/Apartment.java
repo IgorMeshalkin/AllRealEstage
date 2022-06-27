@@ -1,12 +1,16 @@
 package com.igormeshalkin.entity;
 
+import com.igormeshalkin.util.SecurityUtil;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "apartments")
-public class Apartment extends RealEstate{
+public class Apartment extends RealEstate {
 
     @Column(name = "balcony_availability")
     private boolean balconyAvailability;
@@ -20,6 +24,17 @@ public class Apartment extends RealEstate{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Like> likes;
+
+    public Apartment() {
+    }
+
+    public Apartment(String street, String houseNumber,int numberOfRooms, double area, int floor, int totalFloors, boolean balconyAvailability, int price) {
+    }
+
 
     public User getUser() {
         return user;
@@ -53,8 +68,32 @@ public class Apartment extends RealEstate{
         this.totalFloors = totalFloors;
     }
 
-    public String getCreatedFormat() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return getCreated().format(dateTimeFormatter);
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public boolean isLikedByCurrentUser() {
+        List<Like> result = getLikes().stream()
+                .filter(like -> like.getUser().getUsername().equals(SecurityUtil.getCurrentUser().getUsername()))
+                .collect(Collectors.toList());
+
+        return result.size() > 0;
+    }
+
+    public Like getLikeByCurrentUser() {
+        Like result = getLikes()
+                .stream()
+                .filter(like -> like.getUser().getUsername().equals(SecurityUtil.getCurrentUser().getUsername()))
+                .findFirst().orElse(null);
+
+        return result;
+    }
+
+    public boolean isOwnedByCurrentUser() {
+        return this.getUser().getUsername().equals(SecurityUtil.getCurrentUser().getUsername());
     }
 }

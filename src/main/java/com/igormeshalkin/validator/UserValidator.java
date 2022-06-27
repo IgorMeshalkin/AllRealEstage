@@ -81,7 +81,7 @@ public class UserValidator implements Validator {
     }
 
     private boolean phoneNumberVerification(String phoneNumber) {
-        String numberOnly= phoneNumber.replaceAll("[^0-9]", "");
+        String numberOnly = phoneNumber.replaceAll("[^0-9]", "");
         Pattern pattern = Pattern.compile("^((\\+7|7|8)+([0-9]){10})$");
         Matcher matcher = pattern.matcher(numberOnly);
         return matcher.matches();

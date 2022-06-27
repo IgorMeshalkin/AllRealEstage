@@ -1,7 +1,13 @@
 package com.igormeshalkin.entity;
 
+import com.igormeshalkin.util.DateTimeFormatUtil;
+import com.igormeshalkin.util.UserRatingUtil;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+
 import javax.persistence.*;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -38,6 +44,10 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<House> houses;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Like> likes;
 
     public User() {
     }
@@ -131,14 +141,28 @@ public class User extends BaseEntity {
         this.houses = houses;
     }
 
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
     public String getCreatedFormat() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm");
-        return getCreated().format(dateTimeFormatter);
+        return getCreated().format(DateTimeFormatUtil.dateAndTimeFormatter());
     }
 
     public String getUpdatedFormat() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm");
-        return getUpdated().format(dateTimeFormatter);
+        return getCreated().format(DateTimeFormatUtil.dateAndTimeFormatter());
+    }
+
+    public String getRating() {
+        double rating = UserRatingUtil.calculateRating(this);
+        if(rating > 0) {
+            return String.format("%.2f", rating);
+        }
+        return "0";
     }
 
     @Override

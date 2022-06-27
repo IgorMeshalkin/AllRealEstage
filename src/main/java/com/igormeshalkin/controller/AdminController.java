@@ -4,6 +4,7 @@ import com.igormeshalkin.entity.User;
 import com.igormeshalkin.service.UserService;
 import com.igormeshalkin.util.SecurityUtil;
 import com.igormeshalkin.validator.UserValidator;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ public class AdminController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('users:show all')")
     public String getAll(Model model) {
         List<User> result = userService.findAll();
         model.addAttribute("allUsers", result);
@@ -34,6 +36,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/change_role", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('users:update any profiles')")
     public String changeRole(@RequestParam("userId") long id) {
         User user = userService.findById(id);
         userService.changeRole(user);
@@ -41,6 +44,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/block", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('users:update any profiles')")
     public String blockUser(@RequestParam("userId") long id) {
         User user = userService.findById(id);
         userService.blockUser(user);
@@ -48,6 +52,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/update_user", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('users:update any profiles')")
     public String updateUser(@RequestParam("userId") long id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
@@ -56,6 +61,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/save_updated_user", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('users:update any profiles')")
     public String saveUpdatedUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         userValidator.validateUpdate(user, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -66,6 +72,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('users:delete any profiles')")
     public String delete(@RequestParam("userId") long id) {
         userService.delete(id);
         return "redirect:/api/admin/users";

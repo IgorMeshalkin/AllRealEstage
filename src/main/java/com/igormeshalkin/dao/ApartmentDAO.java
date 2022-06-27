@@ -35,7 +35,7 @@ public class ApartmentDAO {
 
     public void delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        Query<User> query = session.createQuery("delete from Apartment where id = :apartmentId");
+        Query<Apartment> query = session.createQuery("delete from Apartment where id = :apartmentId");
         query.setParameter("apartmentId", id);
         query.executeUpdate();
     }

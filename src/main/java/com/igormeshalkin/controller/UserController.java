@@ -5,11 +5,11 @@ import com.igormeshalkin.service.SecurityService;
 import com.igormeshalkin.service.UserService;
 import com.igormeshalkin.util.SecurityUtil;
 import com.igormeshalkin.validator.UserValidator;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,13 +26,8 @@ public class UserController {
         this.userValidator = userValidator;
     }
 
-    @RequestMapping(value = "/cuca/{id}", method = RequestMethod.GET)
-    public void cuca(@PathVariable long id) {
-        User user = userService.findById(id);
-        System.out.println(user.getApartments().size());
-    }
-
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('users:see your profile')")
     public String profile(Model model) {
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         model.addAttribute("currentUser", SecurityUtil.getCurrentUser());
@@ -47,6 +42,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update_user", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('users:update your profile')")
     public String updateUser(Model model) {
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         model.addAttribute("user", SecurityUtil.getCurrentUser());
@@ -54,6 +50,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update_user_with_credentials", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('users:update your profile')")
     public String updateUserWithCredentials(Model model) {
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         model.addAttribute("user", SecurityUtil.getCurrentUser());
@@ -72,6 +69,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/save_updated_user", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('users:update your profile')")
     public String saveUpdatedUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         if(user.getConfirmPassword() != null) {
             userValidator.validate(user, bindingResult);

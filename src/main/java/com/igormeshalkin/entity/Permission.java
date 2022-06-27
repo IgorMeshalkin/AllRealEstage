@@ -1,13 +1,17 @@
 package com.igormeshalkin.entity;
 
 public enum Permission {
-    READ_YOUR_ENTRIES_ABOUT_USER("users:read your entries"),
-    READ_ANY_ENTRIES_ABOUT_USER("users:read any entries"),
-    CHANGE_YOUR_ENTRIES_ABOUT_USER("users:change your entries"),
-    CHANGE_ANY_ENTRIES_ABOUT_USER("users:change any entries"),
-    VOTE("users:vote"),
-    READ_ENTRIES_ABOUT_EVERYTHING("everything:read entries"),
-    CHANGE_ENTRIES_ABOUT_EVERYTHING("everything:change entries");
+    SEE_ALL_USERS("users:show all"),
+    SEE_YOUR_PROFILE("users:see your profile"),
+    UPDATE_ANY_PROFILES("users:update any profiles"),
+    UPDATE_YOUR_PROFILE("users:update your profile"),
+    DELETE_ANY_PROFILES("users:delete any profiles"),
+    CREATE_REAL_ESTATE("real estate:create"),
+    SEE_ANY_REAL_ESTATE("real estate:see any"),
+    UPDATE_ANY_REAL_ESTATE("real estate:update any"),
+    UPDATE_YOUR_REAL_ESTATE("real estate:update your"),
+    DELETE_ANY_REAL_ESTATE("real estate:delete any"),
+    DELETE_YOUR_REAL_ESTATE("real estate:delete your");
 
     private final String permission;
 
