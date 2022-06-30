@@ -49,7 +49,7 @@ public class ApartmentService {
         fromDb.setArea(apartment.getArea());
         fromDb.setFloor(apartment.getFloor());
         fromDb.setTotalFloors(apartment.getTotalFloors());
-        fromDb.setBalconyAvailability(apartment.isBalconyAvailability());
+        fromDb.setBalconyAvailability(apartment.getBalconyAvailability());
         fromDb.setPrice(apartment.getPrice());
 
         apartmentDAO.saveOrUpdate(fromDb);

@@ -57,6 +57,12 @@
         </td>
     </tr>
     <tr>
+        <td style="border: white; padding: 0px"></td>
+        <td style="border: white; padding: 0px" colspan="8">
+            <jsp:include page="apartments_search.jsp"/>
+        </td>
+    </tr>
+    <tr>
         <th style="background-color: white; border-color: white; border-right-color: black"></th>
         <th>Address</th>
         <th>Number of rooms</th>

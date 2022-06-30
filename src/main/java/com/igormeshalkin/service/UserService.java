@@ -30,11 +30,6 @@ public class UserService {
         return userDAO.findById(id);
     }
 
-//    @Transactional
-//    public User findByUsername(String username) {
-//        return userDAO.findByUsername(username);
-//    }
-
     @Transactional
     public void create(User user) {
         LocalDateTime currentDateTime = LocalDateTime.now();

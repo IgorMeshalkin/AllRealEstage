@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 public class Apartment extends RealEstate {
 
     @Column(name = "balcony_availability")
-    private boolean balconyAvailability;
+    private Boolean balconyAvailability;
 
     @Column(name = "floor")
-    private int floor;
+    private Integer floor;
 
     @Column(name = "total_floors")
-    private int totalFloors;
+    private Integer totalFloors;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,7 +32,7 @@ public class Apartment extends RealEstate {
     public Apartment() {
     }
 
-    public Apartment(String street, String houseNumber,int numberOfRooms, double area, int floor, int totalFloors, boolean balconyAvailability, int price) {
+    public Apartment(String street, String houseNumber,Integer numberOfRooms, Double area, Integer floor, Integer totalFloors, Boolean balconyAvailability, Integer price) {
     }
 
 
@@ -44,27 +44,27 @@ public class Apartment extends RealEstate {
         this.user = user;
     }
 
-    public boolean isBalconyAvailability() {
+    public Boolean getBalconyAvailability() {
         return balconyAvailability;
     }
 
-    public void setBalconyAvailability(boolean balconyAvailability) {
+    public void setBalconyAvailability(Boolean balconyAvailability) {
         this.balconyAvailability = balconyAvailability;
     }
 
-    public int getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
-    public void setFloor(int floor) {
+    public void setFloor(Integer floor) {
         this.floor = floor;
     }
 
-    public int getTotalFloors() {
+    public Integer getTotalFloors() {
         return totalFloors;
     }
 
-    public void setTotalFloors(int totalFloors) {
+    public void setTotalFloors(Integer totalFloors) {
         this.totalFloors = totalFloors;
     }
 

@@ -2,6 +2,8 @@
 <%@ page import="org.apache.taglibs.standard.lang.jstl.test.PageContextImpl" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="th" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -37,23 +39,37 @@
 </div>
 <hr>
 
-<h2 align="center">${isFavorites.equals("Yes") ? 'Your favotite apartments' : 'All apartments'}</h2>
+<h2 align="center" th:if="isFavorites.equals('Yes')">
+<%--${isFavorites.equals("Yes") ? 'Your favotite apartments' : 'All apartments'}--%>
+И что эта хуйня работает?
+</h2>
 
 <table align="center">
-    <tr>
+    <tr style="padding-bottom: 0px">
         <td style="border: white"></td>
-        <td style="border: white; horiz-align: center" colspan="9">
+        <td style="border: white" colspan="9">
 
-            <button style="height:45px;width:100px" onclick="window.location.href='/my_apartments'"><b>My apartments</b></button>
+            <button style="height:45px;width:100px" onclick="window.location.href='/my_apartments'"><b>My apartments</b>
+            </button>
 
-            <button style="height:45px;width:100px" onclick="window.location.href='/create_apartment'"><b>Add new apartment</b></button>
+            <button style="height:45px;width:100px" onclick="window.location.href='/create_apartment'"><b>Add new
+                apartment</b></button>
 
-            <button style="height:45px;width:100px" onclick="window.location.href='${isFavorites.equals("Yes") ? '/' : '/favorites'}'"><b>${isFavorites.equals("Yes") ? 'All apartments' : 'Only favorite apartments'}</b></button>
+            <button style="height:45px;width:100px"
+                    onclick="window.location.href='${isFavorites.equals("Yes") ? '/' : '/favorites'}'">
+                <b>${isFavorites.equals("Yes") ? 'All apartments' : 'Only favorite apartments'}</b></button>
 
             <security:authorize access="hasAuthority('users:show all')">
-            <button style="height:45px;width:100px; vertical-align: bottom; float: right" onclick="window.location.href='/api/admin/users'"><b>All Users</b></button>
+                <button style="height:45px;width:100px; vertical-align: bottom; float: right"
+                        onclick="window.location.href='/api/admin/users'"><b>All Users</b></button>
             </security:authorize>
 
+        </td>
+    </tr>
+    <tr>
+        <td style="border: white; padding: 0px"></td>
+        <td style="border: white; padding: 0px" colspan="8">
+            <jsp:include page="apartments_search.jsp"/>
         </td>
     </tr>
     <tr>
@@ -114,7 +130,7 @@
             <td style="border-color: white; align: center; color: ${apartment.likedByCurrentUser ? 'red': 'grey'}">
                 <input type="button" value="${apartment.likedByCurrentUser ? '&#128077' : '    '}"
                        onclick="window.location.href = '${likeButton}'">
-                ${apartment.likes.size()}
+                    ${apartment.likes.size()}
             </td>
         </tr>
     </c:forEach>

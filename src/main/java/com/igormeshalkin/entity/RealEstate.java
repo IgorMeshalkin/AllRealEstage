@@ -1,14 +1,10 @@
 package com.igormeshalkin.entity;
 
 import com.igormeshalkin.util.DateTimeFormatUtil;
-import com.igormeshalkin.util.SecurityUtil;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @MappedSuperclass
 public class RealEstate extends BaseEntity {
@@ -20,18 +16,18 @@ public class RealEstate extends BaseEntity {
     private String houseNumber;
 
     @Column(name = "area")
-    private double area;
+    private Double area;
 
     @Column(name = "number_of_rooms")
-    private int numberOfRooms;
+    private Integer numberOfRooms;
 
     @Column(name = "price")
-    private int price;
+    private Integer price;
 
     public RealEstate() {
     }
 
-    public RealEstate(Long id, LocalDateTime created, LocalDateTime updated, String street, String houseNumber, double area, int numberOfRooms, int price) {
+    public RealEstate(Long id, LocalDateTime created, LocalDateTime updated, String street, String houseNumber, Double area, Integer numberOfRooms, Integer price) {
         super(id, created, updated);
         this.street = street;
         this.houseNumber = houseNumber;
@@ -56,27 +52,27 @@ public class RealEstate extends BaseEntity {
         this.houseNumber = houseNumber;
     }
 
-    public double getArea() {
+    public Double getArea() {
         return area;
     }
 
-    public void setArea(double area) {
+    public void setArea(Double area) {
         this.area = area;
     }
 
-    public int getNumberOfRooms() {
+    public Integer getNumberOfRooms() {
         return numberOfRooms;
     }
 
-    public void setNumberOfRooms(int numberOfRooms) {
+    public void setNumberOfRooms(Integer numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

@@ -29,20 +29,99 @@ public class ApartmentController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String showAll(Model model) {
-        List<Apartment> result = apartmentService.findAll();
+    public String showAll(Model model,
+                          @RequestParam(value = "address", required = false) String address,
+                          @RequestParam(value = "roomsMin", required = false) Integer roomsMin,
+                          @RequestParam(value = "roomsMax", required = false) Integer roomsMax,
+                          @RequestParam(value = "areaMin", required = false) Double areaMin,
+                          @RequestParam(value = "areaMax", required = false) Double areaMax,
+                          @RequestParam(value = "floorMin", required = false) Integer floorMin,
+                          @RequestParam(value = "floorMax", required = false) Integer floorMax,
+                          @RequestParam(value = "totalFloorsMin", required = false) Integer totalFloorsMin,
+                          @RequestParam(value = "totalFloorsMax", required = false) Integer totalFloorsMax,
+                          @RequestParam(value = "priceMin", required = false) Integer priceMin,
+                          @RequestParam(value = "priceMax", required = false) Integer priceMax,
+                          @RequestParam(value = "balconyTrue", required = false) boolean balcony,
+                          @RequestParam(value = "sort", required = false, defaultValue = "Created") String sort) {
+
+        List<Apartment> result = apartmentService.findAll().stream()
+                .filter(apartment -> address == null || apartment.getAddressFormat().contains(address))
+                .filter(apartment -> roomsMin == null || apartment.getNumberOfRooms() >= roomsMin)
+                .filter(apartment -> roomsMax == null || apartment.getNumberOfRooms() <= roomsMax)
+                .filter(apartment -> areaMin == null || apartment.getArea() >= areaMin)
+                .filter(apartment -> areaMax == null || apartment.getArea() <= areaMax)
+                .filter(apartment -> floorMin == null || apartment.getFloor() >= floorMin)
+                .filter(apartment -> floorMax == null || apartment.getFloor() <= floorMax)
+                .filter(apartment -> totalFloorsMin == null || apartment.getTotalFloors() >= totalFloorsMin)
+                .filter(apartment -> totalFloorsMax == null || apartment.getTotalFloors() <= totalFloorsMax)
+                .filter(apartment -> priceMin == null || apartment.getPrice() >= priceMin)
+                .filter(apartment -> priceMax == null || apartment.getPrice() <= priceMax)
+                .filter(apartment -> !balcony || apartment.getBalconyAvailability())
+                .sorted(((apartment1, apartment2) -> {
+                    if(sort.equals("New ones first")) {
+                        return apartment2.getCreated().compareTo(apartment1.getCreated());
+                    } else if (sort.equals("Rooms")) {
+                        return apartment1.getNumberOfRooms().compareTo(apartment2.getNumberOfRooms());
+                    } else if (sort.equals("Area")) {
+                        return apartment1.getArea().compareTo(apartment2.getArea());
+                    } else if (sort.equals("Price")) {
+                        return apartment1.getPrice().compareTo(apartment2.getPrice());
+                    }
+                    return apartment1.getCreated().compareTo(apartment2.getCreated());
+                }))
+                .collect(Collectors.toList());
+
         model.addAttribute("allApartments", result);
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         model.addAttribute("currentUser", SecurityUtil.getCurrentUser());
         model.addAttribute("isFavorites", "No");
+        model.addAttribute("action", "/");
         return "main";
     }
 
     @RequestMapping(value = "/favorites", method = RequestMethod.GET)
-    public String showFavorites(Model model) {
+    public String showFavorites(Model model,
+                                @RequestParam(value = "address", required = false) String address,
+                                @RequestParam(value = "roomsMin", required = false) Integer roomsMin,
+                                @RequestParam(value = "roomsMax", required = false) Integer roomsMax,
+                                @RequestParam(value = "areaMin", required = false) Double areaMin,
+                                @RequestParam(value = "areaMax", required = false) Double areaMax,
+                                @RequestParam(value = "floorMin", required = false) Integer floorMin,
+                                @RequestParam(value = "floorMax", required = false) Integer floorMax,
+                                @RequestParam(value = "totalFloorsMin", required = false) Integer totalFloorsMin,
+                                @RequestParam(value = "totalFloorsMax", required = false) Integer totalFloorsMax,
+                                @RequestParam(value = "priceMin", required = false) Integer priceMin,
+                                @RequestParam(value = "priceMax", required = false) Integer priceMax,
+                                @RequestParam(value = "balconyTrue", required = false) boolean balcony,
+                                @RequestParam(value = "sort", required = false, defaultValue = "Created") String sort) {
+
         List<Apartment> result = apartmentService.findAll()
                 .stream()
                 .filter(Apartment::isLikedByCurrentUser)
+                .filter(apartment -> address == null || apartment.getAddressFormat().contains(address))
+                .filter(apartment -> roomsMin == null || apartment.getNumberOfRooms() >= roomsMin)
+                .filter(apartment -> roomsMax == null || apartment.getNumberOfRooms() <= roomsMax)
+                .filter(apartment -> areaMin == null || apartment.getArea() >= areaMin)
+                .filter(apartment -> areaMax == null || apartment.getArea() <= areaMax)
+                .filter(apartment -> floorMin == null || apartment.getFloor() >= floorMin)
+                .filter(apartment -> floorMax == null || apartment.getFloor() <= floorMax)
+                .filter(apartment -> totalFloorsMin == null || apartment.getTotalFloors() >= totalFloorsMin)
+                .filter(apartment -> totalFloorsMax == null || apartment.getTotalFloors() <= totalFloorsMax)
+                .filter(apartment -> priceMin == null || apartment.getPrice() >= priceMin)
+                .filter(apartment -> priceMax == null || apartment.getPrice() <= priceMax)
+                .filter(apartment -> !balcony || apartment.getBalconyAvailability())
+                .sorted(((apartment1, apartment2) -> {
+                    if(sort.equals("New ones first")) {
+                        return apartment2.getCreated().compareTo(apartment1.getCreated());
+                    } else if (sort.equals("Rooms")) {
+                        return apartment1.getNumberOfRooms().compareTo(apartment2.getNumberOfRooms());
+                    } else if (sort.equals("Area")) {
+                        return apartment1.getArea().compareTo(apartment2.getArea());
+                    } else if (sort.equals("Price")) {
+                        return apartment1.getPrice().compareTo(apartment2.getPrice());
+                    }
+                    return apartment1.getCreated().compareTo(apartment2.getCreated());
+                }))
                 .collect(Collectors.toList());
 
         model.addAttribute("allApartments", result);
@@ -53,10 +132,47 @@ public class ApartmentController {
     }
 
     @RequestMapping(value = "/my_apartments", method = RequestMethod.GET)
-    public String showMyApartments(Model model) {
+    public String showMyApartments(Model model,
+                                   @RequestParam(value = "address", required = false) String address,
+                                   @RequestParam(value = "roomsMin", required = false) Integer roomsMin,
+                                   @RequestParam(value = "roomsMax", required = false) Integer roomsMax,
+                                   @RequestParam(value = "areaMin", required = false) Double areaMin,
+                                   @RequestParam(value = "areaMax", required = false) Double areaMax,
+                                   @RequestParam(value = "floorMin", required = false) Integer floorMin,
+                                   @RequestParam(value = "floorMax", required = false) Integer floorMax,
+                                   @RequestParam(value = "totalFloorsMin", required = false) Integer totalFloorsMin,
+                                   @RequestParam(value = "totalFloorsMax", required = false) Integer totalFloorsMax,
+                                   @RequestParam(value = "priceMin", required = false) Integer priceMin,
+                                   @RequestParam(value = "priceMax", required = false) Integer priceMax,
+                                   @RequestParam(value = "balconyTrue", required = false) boolean balcony,
+                                   @RequestParam(value = "sort", required = false, defaultValue = "Created") String sort) {
         List<Apartment> result = apartmentService.findAll()
                 .stream()
                 .filter(Apartment::isOwnedByCurrentUser)
+                .filter(apartment -> address == null || apartment.getAddressFormat().contains(address))
+                .filter(apartment -> roomsMin == null || apartment.getNumberOfRooms() >= roomsMin)
+                .filter(apartment -> roomsMax == null || apartment.getNumberOfRooms() <= roomsMax)
+                .filter(apartment -> areaMin == null || apartment.getArea() >= areaMin)
+                .filter(apartment -> areaMax == null || apartment.getArea() <= areaMax)
+                .filter(apartment -> floorMin == null || apartment.getFloor() >= floorMin)
+                .filter(apartment -> floorMax == null || apartment.getFloor() <= floorMax)
+                .filter(apartment -> totalFloorsMin == null || apartment.getTotalFloors() >= totalFloorsMin)
+                .filter(apartment -> totalFloorsMax == null || apartment.getTotalFloors() <= totalFloorsMax)
+                .filter(apartment -> priceMin == null || apartment.getPrice() >= priceMin)
+                .filter(apartment -> priceMax == null || apartment.getPrice() <= priceMax)
+                .filter(apartment -> !balcony || apartment.getBalconyAvailability())
+                .sorted(((apartment1, apartment2) -> {
+                    if(sort.equals("New ones first")) {
+                        return apartment2.getCreated().compareTo(apartment1.getCreated());
+                    } else if (sort.equals("Rooms")) {
+                        return apartment1.getNumberOfRooms().compareTo(apartment2.getNumberOfRooms());
+                    } else if (sort.equals("Area")) {
+                        return apartment1.getArea().compareTo(apartment2.getArea());
+                    } else if (sort.equals("Price")) {
+                        return apartment1.getPrice().compareTo(apartment2.getPrice());
+                    }
+                    return apartment1.getCreated().compareTo(apartment2.getCreated());
+                }))
                 .collect(Collectors.toList());
         model.addAttribute("allApartments", result);
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
