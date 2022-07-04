@@ -76,6 +76,19 @@ public class Apartment extends RealEstate {
         this.likes = likes;
     }
 
+    @Override
+    public String toString() {
+        return "Apartment{" +
+                "id=" + getId() +
+                super.toString() +
+                "balconyAvailability=" + balconyAvailability +
+                ", floor=" + floor +
+                ", totalFloors=" + totalFloors +
+                ", user=" + user +
+                ", likes=" + likes +
+                '}';
+    }
+
     public boolean isLikedByCurrentUser() {
         List<Like> result = getLikes().stream()
                 .filter(like -> like.getUser().getUsername().equals(SecurityUtil.getCurrentUser().getUsername()))
@@ -96,4 +109,9 @@ public class Apartment extends RealEstate {
     public boolean isOwnedByCurrentUser() {
         return this.getUser().getUsername().equals(SecurityUtil.getCurrentUser().getUsername());
     }
+
+    public Integer getLikesSizeForSort() {
+        return getLikes().size();
+    }
 }
+

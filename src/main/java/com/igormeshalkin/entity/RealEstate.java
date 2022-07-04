@@ -5,6 +5,7 @@ import com.igormeshalkin.util.DateTimeFormatUtil;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @MappedSuperclass
 public class RealEstate extends BaseEntity {
@@ -76,12 +77,31 @@ public class RealEstate extends BaseEntity {
         this.price = price;
     }
 
+    @Override
+    public String toString() {
+        return "RealEstate{" +
+                "street='" + street + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", area=" + area +
+                ", numberOfRooms=" + numberOfRooms +
+                ", price=" + price +
+                '}';
+    }
+
     public String getAddressFormat() {
+        String houseNumber = getHouseNumber().replace(" ", "");
+        String houseLiter = "";
+        if(houseNumber.matches(".*[a-zA-Zа-яА-Я]+.*")) {
+            houseLiter = houseNumber.substring(houseNumber.length() - 1).toLowerCase(Locale.ROOT);
+            houseNumber = houseNumber.substring(0, houseNumber.length() - 1);
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("ул."
                 + getStreet().trim()
                 + " д."
-                + getHouseNumber().trim());
+                + houseNumber
+                + houseLiter);
 
         return stringBuilder.toString();
     }
@@ -103,5 +123,18 @@ public class RealEstate extends BaseEntity {
 
     public String getCreatedFormat() {
         return getCreated().format(DateTimeFormatUtil.onlyDateFormatter());
+    }
+
+    public boolean searchAddress(String address) {
+        String[] addressArray = address.toLowerCase(Locale.ROOT).split(" ");
+
+        if(this.getStreet().toLowerCase(Locale.ROOT).contains(addressArray[0])) {
+            if(addressArray.length == 1) {
+                return true;
+            } else if (this.getHouseNumber().toLowerCase(Locale.ROOT).contains(addressArray[1])) {
+                return true;
+            }
+        }
+        return false;
     }
 }

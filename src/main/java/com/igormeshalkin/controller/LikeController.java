@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/api/likes")
 public class LikeController {
@@ -16,20 +18,17 @@ public class LikeController {
         this.likeService = likeService;
     }
 
-    @RequestMapping(value = "/apartments_by_main", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String likeApartmentByMain(@RequestParam("apartmentId") long apartment_id,
-                                      @RequestParam("isFavorites") String favorites) {
+                                      HttpServletRequest request) {
         likeService.like(apartment_id);
-        if (favorites.equals("Yes")) {
-            return "redirect:/favorites";
-        }
-        return "redirect:/";
+        return "redirect:" + request.getHeader("referer");
     }
 
-    @RequestMapping(value = "/apartments_by_details", method = RequestMethod.GET)
-    public String likeApartmentByDetails(@RequestParam("apartmentId") long apartment_id, Model model) {
-        likeService.like(apartment_id);
-        model.addAttribute("apartmentId", apartment_id);
-        return "redirect:/details";
-    }
+//    @RequestMapping(value = "/apartments_by_details", method = RequestMethod.GET)
+//    public String likeApartmentByDetails(@RequestParam("apartmentId") long apartment_id, Model model) {
+//        likeService.like(apartment_id);
+//        model.addAttribute("apartmentId", apartment_id);
+//        return "redirect:/details";
+//    }
 }

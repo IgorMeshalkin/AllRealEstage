@@ -62,12 +62,22 @@
         <td style="background: #ccc"><b>Created</b></td>
         <td>${currentUser.createdFormat}</td>
     </tr>
+    <tr>
+        <td colspan="2" style="border-color: white">
+            <button style="height:35px;width:65px; font-weight: bold; float: left"
+                    onclick="window.location.href='/api/users/update_user'">Update
+            </button>
+        <button style="height:35px;width:55px; font-weight: bold; float: right" onclick="window.location.href='/'">
+            Main
+        </button>
+        </td>
+    </tr>
 </table>
 
-<p align="center"><a href="<c:url value="/api/users/update_user"/>"><b>Update</b></a></p>
+<%--<p align="center"><a href="<c:url value="/api/users/update_user"/>"><b>Update</b></a></p>--%>
 
-<p align="center">
-    <button style="height:30px;width:50px" onclick="window.location.href='/'"><b>Main</b></button>
-</p>
+<%--<p align="center">--%>
+<%--    <button style="height:30px;width:50px" onclick="window.location.href='/'"><b>Main</b></button>--%>
+<%--</p>--%>
 </body>
 </html>

@@ -32,39 +32,34 @@ public class ApartmentValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "houseNumber", "", "This field is required");
 
-        if (apartment.getNumberOfRooms() == 0) {
+        if (apartment.getNumberOfRooms() == null) {
             errors.rejectValue("numberOfRooms", "", "This field is required");
-        }
-        if (apartment.getNumberOfRooms() < 0) {
-            errors.rejectValue("numberOfRooms", "", "The number of rooms cannot be less than zero");
+        } else if (apartment.getNumberOfRooms() <= 0) {
+            errors.rejectValue("numberOfRooms", "", "The number of rooms cannot be less than or equal to zero");
         }
 
-        if (apartment.getArea() == 0) {
+        if (apartment.getArea() == null) {
             errors.rejectValue("area", "", "This field is required");
-        }
-        if (apartment.getArea() < 0) {
-            errors.rejectValue("area", "", "Area cannot be less than zero");
+        } else if (apartment.getArea() <= 0) {
+            errors.rejectValue("area", "", "Area cannot be less than or equal to zero");
         }
 
-        if (apartment.getFloor() == 0) {
+        if (apartment.getFloor() == null) {
             errors.rejectValue("floor", "", "This field is required");
-        }
-        if (apartment.getFloor() < 0) {
-            errors.rejectValue("floor", "", "Floor cannot be less than zero");
+        } else if (apartment.getFloor() <= 0) {
+            errors.rejectValue("floor", "", "Floor cannot be less than or equal to zero");
         }
 
-        if (apartment.getTotalFloors() == 0) {
+        if (apartment.getTotalFloors() == null) {
             errors.rejectValue("totalFloors", "", "This field is required");
-        }
-        if (apartment.getTotalFloors() < 0) {
-            errors.rejectValue("totalFloors", "", "The number of floors cannot be less than zero");
+        } else if (apartment.getTotalFloors() <= 0) {
+            errors.rejectValue("totalFloors", "", "The number of floors cannot be less than or equal to zero");
         }
 
-        if (apartment.getPrice() == 0) {
-            errors.rejectValue("Price", "", "This field is required");
-        }
-        if (apartment.getPrice() < 0) {
-            errors.rejectValue("Price", "", "The price cannot be less than zero");
+        if (apartment.getPrice() == null) {
+            errors.rejectValue("price", "", "This field is required");
+        } else if (apartment.getPrice() <= 0) {
+            errors.rejectValue("price", "", "The price cannot be less than or equal to zero");
         }
     }
 }

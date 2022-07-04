@@ -79,7 +79,7 @@
         </tr>
 <tr>
     <td colspan="2">
-        <input type="submit" style="font-weight: bold" value="OK">
+        <input type="submit" style="height:35px;width:55px; font-weight: bold; float: right" value="OK">
     <td>
 </tr>
     </form:form>

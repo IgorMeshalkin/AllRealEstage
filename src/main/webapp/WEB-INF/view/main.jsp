@@ -38,9 +38,18 @@
     </form>
 </div>
 <hr>
-
 <h2 align="center">
-${isFavorites.equals("Yes") ? 'Your favotite apartments' : 'All apartments'}
+    <c:choose>
+        <c:when test="${mainFilter.equals('favorites')}">
+            Your favorite apartments
+        </c:when>
+        <c:when test="${mainFilter.equals('my_apartments')}">
+            Your apartments
+        </c:when>
+        <c:otherwise>
+            All apartments
+        </c:otherwise>
+    </c:choose>
 </h2>
 
 <table align="center">
@@ -48,15 +57,18 @@ ${isFavorites.equals("Yes") ? 'Your favotite apartments' : 'All apartments'}
         <td style="border: white"></td>
         <td style="border: white" colspan="9">
 
-            <button style="height:45px;width:100px" onclick="window.location.href='/my_apartments'"><b>My apartments</b>
-            </button>
+            <form style="float: left">
+                <input type="hidden" value="${mainFilter.equals("my_apartments") ? 'all_apartments' : 'my_apartments'}" name="mainFilter">
+                <input type="submit" style="height:45px;width:100px; white-space: normal; font-weight: bold; margin-right: 10px" value="${mainFilter.equals("my_apartments") ? 'All apartments' : 'My apartments'}"/>
+            </form>
+
+            <form style="float: left">
+                <input type="hidden" value="${mainFilter.equals("favorites") ? 'all_apartments' : 'favorites'}" name="mainFilter">
+                <input type="submit" style="height:45px;width:100px; white-space: normal; font-weight: bold; margin-right: 10px" value="${mainFilter.equals("favorites") ? 'All apartments' : 'Only favorite apartments'}"/>
+            </form>
 
             <button style="height:45px;width:100px" onclick="window.location.href='/create_apartment'"><b>Add new
                 apartment</b></button>
-
-            <button style="height:45px;width:100px"
-                    onclick="window.location.href='${isFavorites.equals("Yes") ? '/' : '/favorites'}'">
-                <b>${isFavorites.equals("Yes") ? 'All apartments' : 'Only favorite apartments'}</b></button>
 
             <security:authorize access="hasAuthority('users:show all')">
                 <button style="height:45px;width:100px; vertical-align: bottom; float: right"
@@ -81,9 +93,16 @@ ${isFavorites.equals("Yes") ? 'Your favotite apartments' : 'All apartments'}
         <th>Balcony availability</th>
         <th>Price</th>
         <th>Created</th>
-        <security:authorize access="hasAuthority('real estate:update any')">
-            <th>Update/Delete</th>
-        </security:authorize>
+        <c:choose>
+            <c:when test="${mainFilter.equals('my_apartments')}">
+                <th>Update/Delete</th>
+            </c:when>
+            <c:otherwise>
+                <security:authorize access="hasAuthority('real estate:update any')">
+                    <th>Update/Delete</th>
+                </security:authorize>
+            </c:otherwise>
+        </c:choose>
     </tr>
     <c:forEach var="apartment" items="${allApartments}">
 
@@ -99,9 +118,8 @@ ${isFavorites.equals("Yes") ? 'Your favotite apartments' : 'All apartments'}
             <c:param name="apartmentId" value="${apartment.id}"/>
         </c:url>
 
-        <c:url var="likeButton" value="/api/likes/apartments_by_main">
+        <c:url var="likeButton" value="/api/likes">
             <c:param name="apartmentId" value="${apartment.id}"/>
-            <c:param name="isFavorites" value="${isFavorites}"/>
         </c:url>
 
         <tr>
@@ -117,15 +135,30 @@ ${isFavorites.equals("Yes") ? 'Your favotite apartments' : 'All apartments'}
             <td>${apartment.balconyAvailability ? 'Yes' : 'No'}</td>
             <td>${apartment.priceFormat}</td>
             <td>${apartment.createdFormat}</td>
-            <security:authorize access="hasAuthority('real estate:update any')">
-                <td>
-                    <input type="button" value="Update"
-                           onclick="window.location.href = '${updateButton}'">
 
-                    <input type="button" value="Delete"
-                           onclick="window.location.href = '${deleteButton}'">
-                </td>
-            </security:authorize>
+            <c:choose>
+                <c:when test="${mainFilter.equals('my_apartments')}">
+                    <td>
+                        <input type="button" value="Update"
+                               onclick="window.location.href = '${updateButton}'">
+
+                        <input type="button" value="Delete"
+                               onclick="window.location.href = '${deleteButton}'">
+                    </td>
+                </c:when>
+                <c:otherwise>
+                    <security:authorize access="hasAuthority('real estate:update any')">
+                        <td>
+                            <input type="button" value="Update"
+                                   onclick="window.location.href = '${updateButton}'">
+
+                            <input type="button" value="Delete"
+                                   onclick="window.location.href = '${deleteButton}'">
+                        </td>
+                    </security:authorize>
+                </c:otherwise>
+            </c:choose>
+
             <td style="border-color: white; align: center; color: ${apartment.likedByCurrentUser ? 'red': 'grey'}">
                 <input type="button" value="${apartment.likedByCurrentUser ? '&#128077' : '    '}"
                        onclick="window.location.href = '${likeButton}'">

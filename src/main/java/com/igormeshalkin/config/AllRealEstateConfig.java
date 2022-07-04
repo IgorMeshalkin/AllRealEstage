@@ -58,7 +58,7 @@ public class AllRealEstateConfig {
 
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        hibernateProperties.setProperty("hibernate.show_sql", "true");
+        hibernateProperties.setProperty("hibernate.show_sql", "false");
 
         sessionFactory.setHibernateProperties(hibernateProperties);
 

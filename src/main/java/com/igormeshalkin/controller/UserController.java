@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/api/users")
@@ -38,23 +39,20 @@ public class UserController {
     public String registration(Model model) {
         User user = new User();
         model.addAttribute("user", user);
+        model.addAttribute("isCredentials", true);
+        model.addAttribute("context", "registration");
         return "users_registration";
     }
 
     @RequestMapping(value = "/update_user", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('users:update your profile')")
-    public String updateUser(Model model) {
+    public String updateUser(@RequestParam(value = "isCredentials", required = false) Boolean isCredentials, Model model) {
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         model.addAttribute("user", SecurityUtil.getCurrentUser());
-        return "users_update";
-    }
+        model.addAttribute("isCredentials", isCredentials);
+        model.addAttribute("isCredentialsButtonVisible", true);
 
-    @RequestMapping(value = "/update_user_with_credentials", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('users:update your profile')")
-    public String updateUserWithCredentials(Model model) {
-        model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
-        model.addAttribute("user", SecurityUtil.getCurrentUser());
-        return "users_update_with_credentials";
+        return "users_update";
     }
 
     @RequestMapping(value = "/save_registered_user", method = RequestMethod.POST)
@@ -70,17 +68,23 @@ public class UserController {
 
     @RequestMapping(value = "/save_updated_user", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('users:update your profile')")
-    public String saveUpdatedUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
-        if(user.getConfirmPassword() != null) {
+    public String saveUpdatedUser(@ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
+        if (user.getConfirmPassword() != null) {
             userValidator.validate(user, bindingResult);
             if (bindingResult.hasErrors()) {
-                return "users_update_with_credentials";
+                model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
+                model.addAttribute("isCredentials", true);
+                model.addAttribute("isCredentialsButtonVisible", false);
+                return "users_update";
             }
             userService.update(user);
             securityService.autoLogin(user.getUsername(), user.getConfirmPassword());
         } else {
             userValidator.validateUpdate(user, bindingResult);
             if (bindingResult.hasErrors()) {
+                model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
+                model.addAttribute("isCredentials", false);
+                model.addAttribute("isCredentialsButtonVisible", false);
                 return "users_update";
             }
             userService.update(user);

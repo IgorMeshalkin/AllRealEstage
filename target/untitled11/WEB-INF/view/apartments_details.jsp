@@ -71,33 +71,67 @@
         <td style="background: #ccc"><b>Created</b></td>
         <td>${apartment.createdFormat}</td>
     </tr>
-    <tr><td style="border-right-color: white; border-left-color: white"><b>Contacts:</b></td></tr>
-    <tr>
-        <td style="background: #ccc"><b>Name</b></td>
-        <td>${apartment.user.firstName}</td>
-    </tr>
-    <tr>
-        <td style="background: #ccc"><b>Phone number</b></td>
-        <td>${apartment.user.phoneNumber}</td>
-    </tr>
+    <c:choose>
+        <c:when test="${apartment.ownedByCurrentUser}">
+            <tr>
+                <td style="border-color: white" colspan="2" ><b>This is your apartment</b></td>
+            </tr>
+            <tr>
+                <td style="border-color: white" ><b>Added to favorites:</b></td>
+                <td style="border-color: white; color: red" ><b>${apartment.likes.size()}</b></td>
+            </tr>
+            <tr>
+                <c:url var="updateButton" value="/update_apartment">
+                    <c:param name="apartmentId" value="${apartment.id}"/>
+                </c:url>
 
-    <tr>
-        <c:url var="likeButton" value="/api/likes/apartments_by_details">
-            <c:param name="apartmentId" value="${apartment.id}"/>
-        </c:url>
-        <td style="border: white"><b>Add to favorites:</b>
-        <td style="border: white">
-        <input type="button" value="${apartment.likedByCurrentUser ? '&#128077' : '    '}"
-               onclick="window.location.href = '${likeButton}'">
-    </td>
-    </tr>
+                <c:url var="deleteButton" value="/delete">
+                    <c:param name="apartmentId" value="${apartment.id}"/>
+                </c:url>
 
+                <td style="border: white" colspan="2">
+                    <input type="button" style="height:30px;width:60px" value="Update"
+                           onclick="window.location.href = '${updateButton}'">
+
+                    <input type="button" style="height:30px;width:60px" value="Delete"
+                           onclick="window.location.href = '${deleteButton}'">
+
+                    <button style="height:30px;width:100px; float: right" onclick="window.location.href='${lastPage}'"><b>Back to main</b></button>
+                </td>
+            </tr>
+        </c:when>
+        <c:otherwise>
+            <tr>
+                <td style="border-right-color: white; border-left-color: white"><b>Contacts:</b></td>
+            </tr>
+            <tr>
+                <td style="background: #ccc"><b>Name</b></td>
+                <td>${apartment.user.firstName}</td>
+            </tr>
+            <tr>
+                <td style="background: #ccc"><b>Phone number</b></td>
+                <td>${apartment.user.phoneNumber}</td>
+            </tr>
+
+            <tr>
+                <c:url var="likeButton" value="/api/likes">
+                    <c:param name="apartmentId" value="${apartment.id}"/>
+                </c:url>
+                <td style="border: white"><b>Add to favorites:</b>
+                <td style="border: white">
+                    <input type="button" value="${apartment.likedByCurrentUser ? '&#128077' : '    '}"
+                           onclick="window.location.href = '${likeButton}'">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="border-color: white">
+                    <p align="center">
+                        <button style="height:30px;width:50px" onclick="window.location.href='${lastPage}'"><b>Main</b></button>
+                    </p>
+                </td>
+            </tr>
+        </c:otherwise>
+    </c:choose>
 </table>
-
-<%--<p align="center"><a href="<c:url value="/api/users/update_user"/>"><b>Update</b></a></p>--%>
-
-<p align="center">
-    <button style="height:30px;width:50px" onclick="window.location.href='/'"><b>Main</b></button>
-</p>
 </body>
 </html>

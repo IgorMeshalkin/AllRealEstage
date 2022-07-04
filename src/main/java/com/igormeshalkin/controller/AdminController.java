@@ -57,7 +57,9 @@ public class AdminController {
         User user = userService.findById(id);
         model.addAttribute("currentUserName", SecurityUtil.getCurrentUserFirstNameAndLastName());
         model.addAttribute("user", user);
-        return "users_update_for_admin";
+        model.addAttribute("isCredentials", false);
+        model.addAttribute("isAdmin", true);
+        return "users_update";
     }
 
     @RequestMapping(value = "/save_updated_user", method = RequestMethod.POST)
@@ -65,7 +67,7 @@ public class AdminController {
     public String saveUpdatedUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         userValidator.validateUpdate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "users_update_for_admin";
+            return "users_update";
         }
         userService.update(user);
         return "redirect:/api/admin/users";
