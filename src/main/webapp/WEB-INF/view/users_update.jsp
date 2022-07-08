@@ -19,10 +19,10 @@
     </style>
 </head>
 <html>
-<body>
+<body style="font-family: Calibri">
 <div align="right">
     <%= request.getAttribute("currentUserName") %>
-    <button onclick="window.location.href='/api/users/profile'">Profile</button>
+    <button style="margin-right: 5px" onclick="window.location.href='/api/users/profile'">Profile</button>
     <form action="/logout" method="post" style="float: right">
         <input type="submit" value="Sign Out"/>
     </form>
@@ -108,7 +108,7 @@
             <form style="float: left">
                 <input type="hidden" value="${isCredentials ? false : true}" name="isCredentials">
                 <input type="submit"
-                       style="height:35px;width:100px; white-space: normal; font-weight: bold"
+                       style="height:35px;width:100px; white-space: normal"
                        value="${isCredentials ? 'Without credentials' : 'With credentials'}"/>
             </form>
             </c:when>

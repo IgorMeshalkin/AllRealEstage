@@ -93,7 +93,7 @@ public class ApartmentController {
         model.addAttribute("currentUser", SecurityUtil.getCurrentUser());
         model.addAttribute("mainFilter", mainFilter);
         model.addAttribute("queryIsEmpty", UrlAddressUtil.isEmpty(request.getQueryString()));
-        model.addAttribute("addressForReset", UrlAddressUtil.getAddressForReset(request.getQueryString()));
+        model.addAttribute("addressForReset", UrlAddressUtil.getAddressForResetMainPage(request.getQueryString()));
         return "main";
     }
 

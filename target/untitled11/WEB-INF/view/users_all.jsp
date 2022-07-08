@@ -26,20 +26,40 @@
         }
     </style>
 </head>
-<body>
+<body style="font-family: Calibri">
 
 <div align="right">
     <%= request.getAttribute("currentUserName") %>
-    <button onclick="window.location.href='/api/users/profile'">Profile</button>
+    <button style="margin-right: 5px" onclick="window.location.href='/api/users/profile'">Profile</button>
     <form action="/logout" method="post" style="float: right">
         <input type="submit" value="Sign Out"/>
     </form>
 </div>
 <hr>
 
-<h2 align="center">All Users</h2>
+<h2 align="center">
+    <c:choose>
+        <c:when test="${mainFilter.equals('only_admins')}">
+            Users with role: "ADMIN"
+        </c:when>
+        <c:when test="${mainFilter.equals('only_users')}">
+            Users with role: "USER"
+        </c:when>
+        <c:otherwise>
+            All users
+        </c:otherwise>
+    </c:choose>
+</h2>
 
 <table align="center">
+    <tr>
+        <td style="border: white; padding: 0px" colspan="8">
+            <jsp:include page="users_search.jsp"/>
+        </td>
+        <td style="border-color: white; border-bottom-color: black">
+            <button style="height:40px;width:65px; float: right" onclick="window.location.href='/'"><b>Main</b></button>
+        </td>
+    </tr>
     <tr>
         <th>First name</th>
         <th>Last name</th>
@@ -74,11 +94,11 @@
             <td>${user.lastName}</td>
             <td>${user.phoneNumber}</td>
             <td>${user.role}
-                <input type="button" value="Change Role"
+                <input type="button" value="Change Role" style="float: right"
                        onclick="window.location.href = '${changeRoleButton}'">
             </td>
             <td>${user.active}
-                <input type="button" value="${user.active ? 'Block' : 'Unlock'}"
+                <input type="button" style="float: right" value="${user.active ? 'Block' : 'Unlock'}"
                        onclick="window.location.href = '${blockButton}'">
             </td>
             <td>${user.rating}</td>
@@ -88,15 +108,11 @@
                 <input type="button" value="Update"
                        onclick="window.location.href = '${updateButton}'">
 
-                    <input type="button" value="Delete"
-                           onclick="window.location.href = '${deleteButton}'">
+                <input type="button" value="Delete"
+                       onclick="window.location.href = '${deleteButton}'">
             </td>
         </tr>
     </c:forEach>
 </table>
-
-<p align="center">
-    <button style="height:30px;width:50px" onclick="window.location.href='/'"><b>Main</b></button>
-</p>
 </body>
 </html>

@@ -18,7 +18,15 @@
     </style>
 </head>
 <html>
-<body>
+<body style="font-family: Calibri">
+<div align="right">
+    <%= request.getAttribute("currentUserName") %>
+    <button style="margin-right: 5px" onclick="window.location.href='/api/users/profile'">Profile</button>
+    <form action="/logout" method="post" style="float: right">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<hr>
 <h2 align="center">${action.equals("/save_created_apartment") ? 'Create new apartment' : 'Update apartment'}</h2>
 <table align="center">
 

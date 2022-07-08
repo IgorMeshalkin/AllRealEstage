@@ -29,10 +29,10 @@
         }
     </style>
 </head>
-<body>
+<body style="font-family: Calibri">
 <div align="right">
     <%= request.getAttribute("currentUserName") %>
-    <button onclick="window.location.href='/api/users/profile'">Profile</button>
+    <button style="margin-right: 5px" onclick="window.location.href='/api/users/profile'">Profile</button>
     <form action="/logout" method="post" style="float: right">
         <input type="submit" value="Sign Out"/>
     </form>

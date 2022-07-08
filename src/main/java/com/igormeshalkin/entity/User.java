@@ -2,13 +2,12 @@ package com.igormeshalkin.entity;
 
 import com.igormeshalkin.util.DateTimeFormatUtil;
 import com.igormeshalkin.util.UserRatingUtil;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "users")
@@ -41,9 +40,6 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Apartment> apartments;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<House> houses;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -133,14 +129,6 @@ public class User extends BaseEntity {
         this.apartments = apartments;
     }
 
-    public List<House> getHouses() {
-        return houses;
-    }
-
-    public void setHouses(List<House> houses) {
-        this.houses = houses;
-    }
-
     public List<Like> getLikes() {
         return likes;
     }
@@ -154,12 +142,12 @@ public class User extends BaseEntity {
     }
 
     public String getUpdatedFormat() {
-        return getCreated().format(DateTimeFormatUtil.dateAndTimeFormatter());
+        return getUpdated().format(DateTimeFormatUtil.dateAndTimeFormatter());
     }
 
     public String getRating() {
         double rating = UserRatingUtil.calculateRating(this);
-        if(rating > 0) {
+        if (rating > 0) {
             return String.format("%.2f", rating);
         }
         return "0";
@@ -174,8 +162,28 @@ public class User extends BaseEntity {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", created='" + getCreated() + '\'' +
+                ", updated='" + getUpdated() + '\'' +
                 ", role=" + role +
                 ", active=" + active +
                 '}';
+    }
+
+    public boolean searchByLine(String searchLine) {
+        if (getFirstName().toLowerCase(Locale.ROOT).contains(searchLine.toLowerCase(Locale.ROOT)) ||
+                getLastName().toLowerCase(Locale.ROOT).contains(searchLine.toLowerCase(Locale.ROOT))) {
+            return true;
+        }
+        String phoneNumberFromSearchLine = searchLine.replaceAll("[^0-9]", "");
+        if (phoneNumberFromSearchLine.length() == 0) {
+            return false;
+        }
+        if (phoneNumberFromSearchLine.length() > 10) {
+            phoneNumberFromSearchLine = phoneNumberFromSearchLine.substring(1);
+        }
+        if (getPhoneNumber().replaceAll("[^0-9]", "").contains(phoneNumberFromSearchLine)) {
+            return true;
+        }
+        return false;
     }
 }

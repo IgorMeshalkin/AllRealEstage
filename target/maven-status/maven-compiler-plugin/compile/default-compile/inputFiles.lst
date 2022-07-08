@@ -13,6 +13,7 @@ C:\projects\AllRealEstate\src\main\java\com\igormeshalkin\dao\UserDAO.java
 C:\projects\AllRealEstate\src\main\java\com\igormeshalkin\config\WebInitializer.java
 C:\projects\AllRealEstate\src\main\java\com\igormeshalkin\controller\AdminController.java
 C:\projects\AllRealEstate\src\main\java\com\igormeshalkin\controller\UserController.java
+C:\projects\AllRealEstate\src\main\java\com\igormeshalkin\util\UrlAddressUtil.java
 C:\projects\AllRealEstate\src\main\java\com\igormeshalkin\controller\LoginController.java
 C:\projects\AllRealEstate\src\main\java\com\igormeshalkin\validator\UserValidator.java
 C:\projects\AllRealEstate\src\main\java\com\igormeshalkin\entity\Apartment.java

@@ -18,7 +18,7 @@
     </style>
 </head>
 <html>
-<body>
+<body style="font-family: Calibri">
 <h2 align="center">Registration</h2>
 <table align="center">
     <form:form method="post" action="/api/users/save_registered_user" modelAttribute="user">

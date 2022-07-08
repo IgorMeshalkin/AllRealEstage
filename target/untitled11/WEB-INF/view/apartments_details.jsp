@@ -25,11 +25,11 @@
         }
     </style>
 </head>
-<body>
+<body style="font-family: Calibri">
 
 <div align="right">
     <%= request.getAttribute("currentUserName") %>
-    <button onclick="window.location.href='/api/users/profile'">Profile</button>
+    <button style="margin-right: 5px" onclick="window.location.href='/api/users/profile'">Profile</button>
     <form action="/logout" method="post" style="float: right">
         <input type="submit" value="Sign Out"/>
     </form>
@@ -126,7 +126,7 @@
             <tr>
                 <td colspan="2" style="border-color: white">
                     <p align="center">
-                        <button style="height:30px;width:50px" onclick="window.location.href='${lastPage}'"><b>Main</b></button>
+                        <button style="height:35px;width:55px" onclick="window.location.href='${lastPage}'"><b>Main</b></button>
                     </p>
                 </td>
             </tr>

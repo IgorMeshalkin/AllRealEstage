@@ -5,7 +5,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
-<body>
+<body style="font-family: Calibri">
 <form>
     <input type="hidden" value="${mainFilter}" name="mainFilter">
     <table style="text-align: center">

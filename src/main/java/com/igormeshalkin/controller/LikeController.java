@@ -19,16 +19,9 @@ public class LikeController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String likeApartmentByMain(@RequestParam("apartmentId") long apartment_id,
+    public String likeApartment(@RequestParam("apartmentId") long apartment_id,
                                       HttpServletRequest request) {
         likeService.like(apartment_id);
         return "redirect:" + request.getHeader("referer");
     }
-
-//    @RequestMapping(value = "/apartments_by_details", method = RequestMethod.GET)
-//    public String likeApartmentByDetails(@RequestParam("apartmentId") long apartment_id, Model model) {
-//        likeService.like(apartment_id);
-//        model.addAttribute("apartmentId", apartment_id);
-//        return "redirect:/details";
-//    }
 }

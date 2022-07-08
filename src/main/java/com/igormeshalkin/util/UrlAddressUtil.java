@@ -2,13 +2,22 @@ package com.igormeshalkin.util;
 
 public class UrlAddressUtil {
 
-    public static String getAddressForReset(String query) {
+    public static String getAddressForResetMainPage(String query) {
         if(query == null || !query.contains("&")) {
             return "/";
         }
 
         int index = query.indexOf("&");
         return "/?" + query.substring(0, index);
+    }
+
+    public static String getAddressForResetUsersPage(String query) {
+        if(query == null || !query.contains("&")) {
+            return "/api/admin/users";
+        }
+
+        int index = query.indexOf("&");
+        return "/api/admin/users?" + query.substring(0, index);
     }
 
     public static boolean isEmpty(String query) {
