@@ -52,6 +52,8 @@
     </c:choose>
 </h2>
 
+<img src="${pageContext.request.contextPath}/images/1.jpg">
+
 <table align="center">
     <tr style="padding-bottom: 0px">
         <td style="border: white"></td>

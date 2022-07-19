@@ -48,6 +48,10 @@ public class UserService {
     @Transactional
     public void update(User user) {
         User fromDb = userDAO.findById(user.getId());
+        if(fromDb.getUsername().equals("admin")) {
+            return;
+        }
+
         LocalDateTime currentDateTime = LocalDateTime.now();
         fromDb.setUpdated(currentDateTime);
 
@@ -69,6 +73,9 @@ public class UserService {
     @Transactional
     public void changeRole(User user) {
         User fromDb = userDAO.findById(user.getId());
+        if(fromDb.getUsername().equals("admin")) {
+            return;
+        }
 
         LocalDateTime currentDateTime = LocalDateTime.now();
         fromDb.setUpdated(currentDateTime);
@@ -83,6 +90,9 @@ public class UserService {
     @Transactional
     public void blockUser(User user) {
         User fromDb = userDAO.findById(user.getId());
+        if(fromDb.getUsername().equals("admin")) {
+            return;
+        }
 
         LocalDateTime currentDateTime = LocalDateTime.now();
         fromDb.setUpdated(currentDateTime);
@@ -96,6 +106,9 @@ public class UserService {
 
     @Transactional
     public void delete(Long id) {
+        if(userDAO.findById(id).getUsername().equals("admin")) {
+            return;
+        }
         userDAO.delete(id);
     }
 
