@@ -9,14 +9,13 @@ public class BaseEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_gen")
+    @SequenceGenerator(name = "sequence_gen", sequenceName = "real_estate_sequence", allocationSize = 1)
     private Long id;
 
-//    @CreatedDate
     @Column(name = "created")
     private LocalDateTime created;
 
-//    @LastModifiedDate
     @Column(name = "updated")
     private LocalDateTime updated;
 

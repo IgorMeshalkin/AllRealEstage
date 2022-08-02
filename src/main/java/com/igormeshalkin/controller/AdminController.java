@@ -59,8 +59,9 @@ public class AdminController {
                             return user1.getFirstName().compareTo(user2.getFirstName());
                         } else if (sort.equals("Last name")) {
                             return user1.getLastName().compareTo(user2.getLastName());
+                        } else {
+                            return user1.getId().compareTo(user2.getId());
                         }
-                    return user1.getCreated().compareTo(user2.getCreated());
                 }))
                 .collect(Collectors.toList());
 

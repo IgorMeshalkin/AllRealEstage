@@ -40,10 +40,10 @@ public class AllRealEstateConfig {
     public DataSource dataSource() {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         try {
-            dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
-            dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/real_estate_db");
-            dataSource.setUser("root");
-            dataSource.setPassword("root");
+            dataSource.setDriverClass("org.postgresql.Driver");
+            dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/real_estate_db");
+            dataSource.setUser("postgres");
+            dataSource.setPassword("postgres");
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
@@ -57,7 +57,7 @@ public class AllRealEstateConfig {
         sessionFactory.setPackagesToScan("com.igormeshalkin.entity");
 
         Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         hibernateProperties.setProperty("hibernate.show_sql", "false");
 
         sessionFactory.setHibernateProperties(hibernateProperties);
